@@ -1,0 +1,197 @@
+FORMAT: 1A
+HOST: https://photoram.herokuapp.com/api
+
+# PHOTORAM
+
+This project is an example of an image repository API. The main functionalities
+are add/remove/get an image or multiple images at once. The system was developed
+using Node.js and Express for the core of the API, Mongoose to connect with the
+MongoDB databse, and Jest with Supertest for the testing.
+
+
+## User Info [/user/{user_id}]
+### Get user [GET]
+This endpoint returns the user object given an user id.
+
++ Parameters
+    + user_id (string) - ID of the user
++ Response 200 (application/json)
+
+        {
+            "_id": "61515854031cb0eb1dd6e457",
+            "name": "Anna Gabriela",
+            "email": "anna@gmail.com"
+        }
+
+## Create User [/user/]
+### Add new user [POST]
+This endpoint creates a new user and returns the user object created.
+
++ Request (application/json)
+
+        {
+            "name": "John Doe",
+            "email": "john@doe.com"
+        }
++ Response 200 (application/json)
+
+        {
+            "name": "John Doe",
+            "email": "john@doe.com",
+            "_id": "61516324778c74b830b08b5a",
+            "__v": 0
+        }
+
+## Image Info [/image/{image_id}]
+### Get image info [GET]
+This endpoint returns the image object given an image id.
+
++ Parameters
+    + image_id (string) - ID of the image
++ Response 200 (application/json)
+
+        {
+            "_id": "61515891031cb0eb1dd6e45a",
+            "url": "https://images.unsplash.com/photo-1586227740560-8cf2732c1531?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1561&q=80",
+            "tags": [
+                "Woman",
+                "Laptop",
+                "Table Top",
+                "Chair",
+                "Mountain"
+            ],
+            "isPrivate": false,
+            "uploadDate": "2021-09-27T03:00:00.000Z",
+            "publisherId": "61515854031cb0eb1dd6e457"
+        }
+
+## Create Image [/image]
+### Add new image [POST]
+This endpoint creates a new image and returns the image object created.
+
++ Request (application/json)
+
+        {
+            "url": "http://placeimg.com/640/480",
+            "publisherId": "61516324778c74b830b08b5a"
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "url": "https://cdn.shopify.com/shopifycloud/brochure/assets/team/hero-small-dd914b46ac62310cad1f8aa0a6c9da10eb0b9ff627d00931ec55224266587a41.jpg",
+            "tags": [],
+            "isPrivate": false,
+            "publisherId": "61516324778c74b830b08b5a",
+            "uploadDate": "2021-09-28T00:48:45.719Z",
+            "_id": "615266b7a2ff99208e36d291",
+            "__v": 0
+        }
+
+
+## Delete Image [/image/{id_image}]
+### Remove an image [DELETE]
+This endpoint deletes an image given an id and returns the deleted image object.
+
++ Parameters
+    + id_image (string) - ID of the image
++ Response 200 (application/json)
+
+        {
+            "_id": "61516de5031cb0eb1dd6e475",
+            "url": "https://cdn.shopify.com/shopifycloud/brochure/assets/team/hero-small-dd914b46ac62310cad1f8aa0a6c9da10eb0b9ff627d00931ec55224266587a41.jpg",
+            "tags": [],
+            "isPrivate": false,
+            "publisherId": "61516324778c74b830b08b5a",
+            "uploadDate": "2021-09-27T06:51:25.840Z",
+            "__v": 0
+        }
+        
+
+## Multiple Images |  Actions [/images]
+### Add batch of images [POST]
+This endpoint creates multiple images and returns the array of the images created.
+
++ Request (application/json)
+
+        {
+            "images": [
+                {
+                    "url": "https://cdn.shopify.com/shopifycloud/brochure/assets/culture/hero-image-small-7f550f0e7f3c91f7e206aceb2a93a057d9ad8f653daf3e7a3b73006b512d6a1d.jpg",
+                    "publisherId": "61515854031cb0eb1dd6e457"
+                },
+                {
+                    "url": "https://cdn.shopify.com/shopifycloud/brochure/assets/culture/shopify-employee-sitting-on-office-couch-with-a-window-small-ceea1bae7a52fc75b49ddf8e08a3c0bf8a2595f0c56fc8dbe4a7a2c392788fec.jpg", 
+                    "publisherId": "61515854031cb0eb1dd6e457"
+                }
+            ]
+        }
+        
++ Response 200 (application/json)
+
+        [
+            {
+                "url": "https://cdn.shopify.com/shopifycloud/brochure/assets/culture/hero-image-small-7f550f0e7f3c91f7e206aceb2a93a057d9ad8f653daf3e7a3b73006b512d6a1d.jpg",
+                "tags": [],
+                "isPrivate": false,
+                "publisherId": "61515854031cb0eb1dd6e457",
+                "uploadDate": "2021-09-28T01:42:26.080Z",
+                "_id": "615274b0cec02e980714866f",
+                "__v": 0
+            },
+            {
+                "url": "https://cdn.shopify.com/shopifycloud/brochure/assets/culture/shopify-employee-sitting-on-office-couch-with-a-window-small-ceea1bae7a52fc75b49ddf8e08a3c0bf8a2595f0c56fc8dbe4a7a2c392788fec.jpg",
+                "tags": [],
+                "isPrivate": false,
+                "publisherId": "61515854031cb0eb1dd6e457",
+                "uploadDate": "2021-09-28T01:42:26.080Z",
+                "_id": "615274b0cec02e9807148670",
+                "__v": 0
+            }
+        ]
+
+### Remove batch of images [DELETE]
+This endpoint deletes multiple images given their id and returns the amount of deleted images.
+
++ Request (application/json)
+
+        {
+            "images": ["615169fe7fe3d3fae17c49ec", "61516a007fe3d3fae17c49ee"]
+        }
++ Response 200 (application/json)
+
+        {
+            "deletedCount": 2
+        }
+        
+## List Images [/images/{publisher_id}]
+### List all images [GET]
+This endpoint returns all public images and private images from the current user. This endpoint uses pagination, it returns a variable with the next page which returns -1 if is doesn't have one.
+
++ Parameters
+    + publisher_id (string) - ID of the user
++ Response 200 (application/json)
+
+        {
+            "images": [
+                {
+                    "_id": "615266b7a2ff99208e36d291",
+                    "url": "https://cdn.shopify.com/shopifycloud/brochure/assets/team/hero-small-dd914b46ac62310cad1f8aa0a6c9da10eb0b9ff627d00931ec55224266587a41.jpg",
+                    "tags": [],
+                    "isPrivate": false,
+                    "uploadDate": "2021-09-28T00:48:45.719Z",
+                    "__v": 0,
+                    "isOwner": false
+                },
+                {
+                    "_id": "6152682b04ca38b0324df366",
+                    "url": "http://placeimg.com/640/480",
+                    "tags": [],
+                    "isPrivate": false,
+                    "uploadDate": "2021-09-28T00:56:04.505Z",
+                    "__v": 0,
+                    "isOwner": false
+                }
+            ],
+            "nextPage": -1
+        }
